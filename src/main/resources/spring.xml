@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context
+                            http://www.springframework.org/schema/context/spring-context.xsd
+                            http://www.springframework.org/schema/tx
+                            http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+
+    <!--声明shiro请求处理对象-->
+    <bean id="shiroFilterfactoryBean" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"></property>
+        <property name="loginUrl" value="login.jsp"></property>
+        <!--过滤器链-->
+        <property name="filterChainDefinitions">
+            <value>
+                /js/**=anon
+                /css/**=anon
+                /login.jsp=anon
+                /main/**=authc
+                /**=anon
+            </value>
+        </property>
+    </bean>
+    <!--安全管理器-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realms">
+            <!--给realms集合添加元素-->
+            <list>
+                <ref bean="realm"></ref>
+            </list>
+        </property>
+        <property name="rememberMeManager" ref="rememberMeManager"></property>
+    </bean>
+    <!--声明记住我的管理器-->
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cookie" ref="cookie"></property>
+    </bean>
+    <!--记住我使用的cookie对象-->
+    <bean id="cookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <property name="maxAge" value="604800"></property>
+        <property name="name" value="rm"/>
+        <!--cookie作用范围-->
+        <property name="path" value="/"/>
+    </bean>
+
+    <bean id="realm" class="com.baizhi.realm.MyRealm"></bean>
+
+    <!--开启包扫描-->
+    <context:component-scan base-package="com.baizhi.service" />
+    <!--引入jdbc.properties-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+
+    <!--创建数据源对象-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="${mysql.driverClassName}"/>
+        <property name="url" value="${mysql.url}"/>
+        <property name="username" value="${mysql.user}"/>
+        <property name="password" value="${mysql.password}"/>
+    </bean>
+
+    <!--创建sqlSessionFactory-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath:com.baizhi.mapper/*.xml"/>
+        <property name="typeAliasesPackage" value="com.baizhi.entity"/>
+    </bean>
+
+    <!--创建DAO-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.baizhi.dao"/>
+    </bean>
+
+    <!--创建事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--开启注解式事务生效-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+</beans>

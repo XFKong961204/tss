@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.baizhi.dao.GuruDao">
+
+    <select id="queryUser" resultType="User">
+        select * from guru
+        where userName=#{0} and passWord=#{1}
+    </select>
+    <select id="queryById" resultType="Guru">
+        select * from guru
+        where guru_id=#{guru_id}
+    </select>
+
+    <insert id="insert" parameterType="Guru">
+        insert into guru values (#{guru_id},#{name},#{profile},#{sex},#{state})
+    </insert>
+
+    <select id="queryAll" resultType="Guru">
+        select guru_id,name,profile,sex,state from guru
+    </select>
+
+    <update id="update" parameterType="Guru">
+        update guru set name=#{name},profile=#{profile},sex=#{sex},state=#{state}
+        where guru_id=#{guru_id}
+    </update>
+
+    <delete id="delete">
+          delete from guru where guru_id=#{guru_id}
+
+    </delete>
+
+
+
+</mapper>

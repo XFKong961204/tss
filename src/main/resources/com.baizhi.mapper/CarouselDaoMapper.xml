@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.baizhi.dao.CarouselDao">
+
+
+    <insert id="insert" parameterType="Carousel">
+            insert into carousel values (#{carousel_id},#{title},#{cdesc},#{imgPath},#{status},sysdate())
+    </insert>
+
+    <select id="queryAll" resultType="Carousel">
+        select * from carousel
+    </select>
+
+    <select id="queryCarousel" resultType="Carousel">
+        select * from carousel
+        where carousel_id=#(carousel_id)
+    </select>
+
+    <update id="update" parameterType="Carousel">
+        update carousel set title=#{title},cdesc=#{cdesc},imgPath=#{imgPath},status=#{status},crateTime=sysdate()
+        where carousel_id=#{carousel_id}
+    </update>
+
+    <delete id="delete">
+          delete from carousel where carousel_id=#{carousel_id}
+    </delete>
+
+
+
+</mapper>

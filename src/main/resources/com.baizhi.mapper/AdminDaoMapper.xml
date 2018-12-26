@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.baizhi.dao.AdminDao">
+
+    <select id="queryAdmin" resultType="Admin">
+        select * from admin
+        where userName=#{0} and passWord=#{1}
+    </select>
+    <select id="queryByUserName" resultType="Admin">
+        select * from admin
+        where userName=#{0}
+
+    </select>
+
+    <insert id="insert" parameterType="User">
+        insert into user values (#{id},#{userName},#{passWord},#{realName},#{sex},#{legalName},#{headportrait},#{address},{signature})
+    </insert>
+
+    <select id="showAll" resultType="User">
+        select id,username,password,realname,sex,legalName,headportrait,address,signature from user
+    </select>
+
+    <update id="update" parameterType="Admin">
+        update admin set userName=#{userName},passWord=#{passWord},realName=#{realName}
+        where admin_id=#{admin_id}
+    </update>
+
+    <delete id="delete">
+          delete from u_user where id=#{id}
+
+    </delete>
+
+
+
+</mapper>

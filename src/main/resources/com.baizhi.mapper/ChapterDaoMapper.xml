@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.baizhi.dao.ChapterDao">
+
+    <select id="queryAlbum" resultType="Chapter">
+        select * from album
+        where userName=#{0} and passWord=#{1}
+    </select>
+    <select id="queryByUserName" resultType="User">
+        select * from user
+        where userName=#{userName}
+    </select>
+
+    <insert id="insert" parameterType="Chapter">
+        insert into chapter values (#{id},#{title},#{size},#{duration},now(),#{downPath},#{a_id})
+    </insert>
+
+    <update id="update" parameterType="Album">
+        update alblum set title=#{title},cover=#{cover},author=#{author},counts=#{counts},broadcast=#{broadcast},score=#{score},
+        publisDate=sysdate(),brief=#{brief}
+        where album_id=#{album_id}
+    </update>
+
+    <delete id="delete">
+          delete from album where album_id=#{album_id}
+
+    </delete>
+
+
+
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.baizhi.dao.AlbumDao">
+    <resultMap id="AlbumResultMap" type="Album">
+        <id property="id" column="id"></id>
+        <result property="title" column="title"/>
+        <result property="cover" column="cover"/>
+        <result property="author" column="author" />
+        <result property="counts" column="counts" />
+        <result property="broadcast" column="broadcast"/>
+        <result property="score" column="score"/>
+        <result property="publisDate" column="publisDate"/>
+        <result property="brief" column="brief"/>
+        <collection property="children" ofType="Chapter">
+            <id property="id" column="chapter_id"/>
+            <result property="title" column="chapter_title"/>
+            <result property="size" column="size"/>
+            <result property="duration" column="duration"/>
+            <result property="uploadDate" column="uploadDate"/>
+            <result property="downPath" column="downPath"/>
+            <result property="a_id" column="a_id"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryAlbum" resultType="Album">
+        select * from album
+        where userName=#{0} and passWord=#{1}
+    </select>
+    <select id="queryByUserName" resultType="User">
+        select * from user
+        where userName=#{userName}
+    </select>
+
+    <insert id="insert" parameterType="Album">
+        insert into album values (#{id},#{title},#{cover},#{author},#{counts},#{broadcast},#{score},#{publisDate},#{brief})
+    </insert>
+
+    <select id="queryAll" resultType="Album" resultMap="AlbumResultMap">
+        select a.id,a.title,a.cover,a.author,a.counts,a.broadcast,a.score,a.publisDate,a.brief,c.id chapter_id,
+        c.chapter_title,c.size,c.duration,c.uploadDate,c.downPath,c.a_id from album a
+        left join chapter c
+        on a.id=c.a_id
+    </select>
+
+
+
+    <delete id="delete">
+          delete from album where album_id=#{album_id}
+
+    </delete>
+
+
+
+</mapper>

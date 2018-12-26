@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.baizhi.dao.MenuDao">
+    
+    <resultMap id="MenuResultMap" type="Menu">
+        <id property="menu_id" column="menu_id"></id>
+        <result property="title" column="title"/>
+        <result property="iconCls" column="iconCls"/>
+        <result property="parent_id" column="parent_id" />
+        <result property="href" column="href"/>
+        <collection property="menus" ofType="Menu">
+            <id property="menu_id" column="m_id"/>
+            <result property="title" column="p_title"/>
+            <result property="iconCls" column="p_iconCls"/>
+            <result property="href" column="p_href"/>
+            <result property="parent_id" column="p_id"/>
+        </collection>
+    </resultMap>
+    
+    <insert id="insert" parameterType="Menu">
+        insert into menu values (#{menu_id},#{title},#{iconCls},#{parent_id},#{href})
+    </insert>
+
+    <select id="queryAll" resultType="Menu" resultMap="MenuResultMap">
+        select m.menu_id,m.title,m.iconCls,m.parent_id,m.href,m2.menu_id m_id,m2.title p_title,m2.iconCls p_iconCls,
+        m2.href p_href,m2.parent_id p_id from menu m
+        inner join menu m2
+        on m.menu_id=m2.parent_id
+    </select>
+
+    <update id="update" parameterType="User">
+        update u_user set username=#{userName},password=#{passWord},sex=#{sex},realname=#{realName}
+        where id=#{id}
+    </update>
+
+    <delete id="delete">
+          delete from u_user where id=#{id}
+
+    </delete>
+
+
+
+</mapper>
