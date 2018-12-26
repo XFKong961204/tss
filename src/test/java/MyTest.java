@@ -149,17 +149,7 @@ public class MyTest {
         Admin admin=adminService.queryAdmin("kong");
         System.out.println(admin);
     }
-    @Test
-    public void query(){
-       Map<String,Integer> map=new HashMap<String,Integer>();
-        List<User> city = userDao.queryCity();
-        for (User s : city) {
 
-            Integer integer = userDao.queryCountByCity(s.getAddress());
-            map.put("name",integer);
-        }
-        System.out.println(map);
-    }
 
     @Test
     public void querys(){
@@ -167,6 +157,10 @@ public class MyTest {
         for (Map<String, Integer> integerMap : query) {
             System.out.println(integerMap);
         }
+    }
+    @Test
+    public void test111(){
+
     }
 
 
